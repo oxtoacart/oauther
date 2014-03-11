@@ -65,6 +65,8 @@ func ObtainToken(
 	}
 }
 
+// TransportWithToken obtains an *oauth.Transport that uses the token specified
+// with the supplied jsonToken.
 func TransportWithToken(jsonToken []byte) (transport *oauth.Transport, err error) {
 	token := &oauth.Token{}
 	if err = json.Unmarshal(jsonToken, token); err != nil {
