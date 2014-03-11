@@ -4,6 +4,8 @@ oauther
 oauther provides a utility for obtaining Google OAuth2 tokens and a library for
 using these from within a Go application.
 
+Compiled releases of oauther are available in the [releases](releases) folder.
+
 ### Command-line Usage (Obtain a Token)
 
 Macintosh% oauther
