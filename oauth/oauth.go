@@ -65,6 +65,16 @@ func ObtainToken(
 	}
 }
 
+func TransportWithToken(jsonToken []byte) (transport *oauth.Transport, err error) {
+	token := &oauth.Token{}
+	if err = json.Unmarshal(jsonToken, token); err != nil {
+		return
+	}
+	transport = &oauth.Transport{}
+	transport.Token = token
+	return
+}
+
 func runServer(port string) {
 	http.HandleFunc("/", handleCallback)
 	http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
