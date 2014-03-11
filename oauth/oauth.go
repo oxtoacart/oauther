@@ -15,7 +15,8 @@ import (
 )
 
 var (
-	codeChannel = make(chan string)
+	codeChannel  = make(chan string)
+	errorChannel = make(chan error)
 )
 
 // ObtainToken uses an interactive browser session to obtain an oauth.Token
@@ -48,16 +49,20 @@ func ObtainToken(
 	// ("Please ask the user if I can access this resource.")
 	authCodeUrl, _ := url.QueryUnescape(config.AuthCodeURL(""))
 	webbrowser.Open(authCodeUrl)
-	authCode := <-codeChannel
 
-	// Exchange the authorization code for an access token.
-	// ("Here's the code you gave the user, now give me a token!")
-	var token *oauth.Token
-	if token, err = transport.Exchange(authCode); err != nil {
+	select {
+	case authCode := <-codeChannel:
+		// Exchange the authorization code for an access token.
+		// ("Here's the code you gave the user, now give me a token!")
+		var token *oauth.Token
+		if token, err = transport.Exchange(authCode); err != nil {
+			return
+		}
+		jsonToken, err = json.Marshal(token)
+		return
+	case err = <-errorChannel:
 		return
 	}
-	jsonToken, err = json.Marshal(token)
-	return
 }
 
 func runServer(port string) {
@@ -66,11 +71,19 @@ func runServer(port string) {
 }
 
 func handleCallback(w http.ResponseWriter, r *http.Request) {
-	codes := r.URL.Query()["code"]
-	if codes != nil {
-		authCode := codes[0]
-		codeChannel <- authCode
+	errStrings := r.URL.Query()["error"]
+	if len(errStrings) == 1 {
+		err := fmt.Errorf("Unable to obtain authorization: %s", errStrings[0])
+		errorChannel <- err
 		w.WriteHeader(200)
-		w.Write([]byte("Authorization Code Received, Thank You"))
+		w.Write([]byte(fmt.Sprintf("%s", err)))
+	} else {
+		codes := r.URL.Query()["code"]
+		if codes != nil {
+			authCode := codes[0]
+			codeChannel <- authCode
+			w.WriteHeader(200)
+			w.Write([]byte("Authorization received, Thank You!"))
+		}
 	}
 }

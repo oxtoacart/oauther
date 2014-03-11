@@ -30,7 +30,7 @@ func main() {
 	flag.Parse()
 	if *clientId == "" || *clientSecret == "" {
 		flag.Usage()
-		fmt.Fprint(os.Stderr, usageMsg)
+		fmt.Fprintln(os.Stderr, usageMsg)
 		os.Exit(1)
 	}
 	jsonToken, err := oauth.ObtainToken(
@@ -42,7 +42,7 @@ func main() {
 		*tokenURL)
 
 	if err != nil {
-		fmt.Fprint(os.Stderr, err)
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(2)
 	} else {
 		fmt.Println(string(jsonToken))
