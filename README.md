@@ -8,6 +8,7 @@ Compiled releases of oauther are available in the [releases](https://github.com/
 
 ### Command-line Usage (Obtain a Token)
 
+```bash
 Macintosh% oauther
 Usage of oauther:
   -auth_url="https://accounts.google.com/o/oauth2/auth": Authentication URL
@@ -24,6 +25,7 @@ To obtain a request token you must specify, -id, -secret and -scope.
 
 To obtain Client ID and Secret, see the "OAuth 2 Credentials" section under
 the "API Access" tab on this page: https://code.google.com/apis/console/
+```
 
 ### Library Usage (Using a Token)
 

@@ -76,8 +76,13 @@ func TransportWithToken(jsonToken []byte) (transport *oauth.Transport, err error
 }
 
 func runServer(port string) {
-	http.HandleFunc("/", handleCallback)
-	http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
+	handler := http.NewServeMux()
+	handler.HandleFunc("/", handleCallback)
+	server := &http.Server{
+		Addr:    fmt.Sprintf(":%s", port),
+		Handler: handler,
+	}
+	server.ListenAndServe()
 }
 
 func handleCallback(w http.ResponseWriter, r *http.Request) {
