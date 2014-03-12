@@ -18,7 +18,8 @@ var (
 
 const usageMsg = `
 oauther obtains a request token from an OAuth2 provider (Google by default)
-and prints it to stdout.
+and prints out a JSON structure that can later be used to initialize an
+oauth.OAuther.
 
 To obtain a request token you must specify, -id, -secret and -scope.
 
@@ -33,18 +34,23 @@ func main() {
 		fmt.Fprintln(os.Stderr, usageMsg)
 		os.Exit(1)
 	}
-	jsonToken, err := oauth.ObtainToken(
-		*clientId,
-		*clientSecret,
-		*port,
-		*scope,
-		*authURL,
-		*tokenURL)
-
-	if err != nil {
+	oauther := &oauth.OAuther{
+		ClientId:     *clientId,
+		ClientSecret: *clientSecret,
+		TokenURL:     *tokenURL,
+		Scope:        *scope,
+		Port:         *port,
+		AuthURL:      *authURL,
+	}
+	if err := oauther.ObtainToken(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(2)
 	} else {
-		fmt.Println(string(jsonToken))
+		if jsonOauther, err := oauther.ToJSON(); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(3)
+		} else {
+			fmt.Println(string(jsonOauther))
+		}
 	}
 }

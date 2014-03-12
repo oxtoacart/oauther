@@ -36,12 +36,11 @@ import (
 )
 
 func myFunc() {
-    var jsonToken []byte
-    // read jsonToken from somewhere
-    transport, err := oauth.transportWithToken(jsonToken)
-    // transport is a *code.google.com/p/goauth2/oauth.Transport
+    var jsonOauther []byte
+    // read jsonOauther from somewhere
+    oauther, err := oauth.FromJSON(jsonOauther)
     var client *http.Client
-    client := transport.Client()
+    client := oauther.Transport().Client()
     // now use your client to make http requests
 }
 ```
