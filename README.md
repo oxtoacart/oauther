@@ -6,11 +6,10 @@ using these from within a Go application.
 
 Compiled releases of oauther are available in the [releases](https://github.com/oxtoacart/oauther/releases/) folder.
 
-### Command-line Usage (Obtain a Token)
+### Command-line Usage (Obtain Token w/ Config)
 
 ```bash
-Macintosh% oauther
-Usage of oauther:
+Usage of /var/folders/j_/9dywssj524gf3100s4q9l48w0000gp/T/go-build142777697/command-line-arguments/_obj/exe/main:
   -auth_url="https://accounts.google.com/o/oauth2/auth": Authentication URL
   -id="": Client ID
   -port="9000": Port for callback web server
@@ -19,7 +18,8 @@ Usage of oauther:
   -token_url="https://accounts.google.com/o/oauth2/token": Token URL
 
 oauther obtains a request token from an OAuth2 provider (Google by default)
-and prints it to stdout.
+and prints out a JSON structure that can later be used to initialize an
+oauth.OAuther.
 
 To obtain a request token you must specify, -id, -secret and -scope.
 
@@ -27,7 +27,7 @@ To obtain Client ID and Secret, see the "OAuth 2 Credentials" section under
 the "API Access" tab on this page: https://code.google.com/apis/console/
 ```
 
-### Library Usage (Using a Token)
+### Library Usage (Using a Token w/ Config)
 
 ```go
 import (
