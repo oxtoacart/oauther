@@ -9,7 +9,7 @@ Compiled releases of oauther are available in the [releases](https://github.com/
 ### Command-line Usage (Obtain Token w/ Config)
 
 ```bash
-Usage of /var/folders/j_/9dywssj524gf3100s4q9l48w0000gp/T/go-build142777697/command-line-arguments/_obj/exe/main:
+Usage of oauther:
   -auth_url="https://accounts.google.com/o/oauth2/auth": Authentication URL
   -id="": Client ID
   -port="9000": Port for callback web server
